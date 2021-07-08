@@ -3,7 +3,7 @@ const Post = require('../posts/posts-model')
 const User = require('./users-model')
 // You will need `users-model.js` and `posts-model.js` both
 // The middleware functions also need to be required
-const { validateUserId } = require('../middleware/middleware')
+const { validateUserId, validateUser } = require('../middleware/middleware')
 
 const router = express.Router();
 
@@ -22,30 +22,33 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', validateUserId, async (req, res) => {
+  validateUserId()
   // RETURN THE USER OBJECT
   // this needs a middleware to verify user id
-  try {
-    const user = await User.getById(req.params.id)
-    if(!user) {
-      res.status(404).json({
-        message: 'user not found'
-      })
-    } else {
-      res.json(user)
-    }
-  }
-  catch (err) {
-    res.status(500).json({
-      message: 'user not found'
-    })
-  }
+  // try {
+  //   const user = await User.getById(req.params.id)
+  //   if(!user) {
+  //     res.status(404).json({
+  //       message: 'user not found'
+  //     })
+  //   } else {
+  //     res.json(user)
+  //   }
+  // }
+  // catch (err) {
+  //   res.status(500).json({
+  //     message: 'user not found'
+  //   })
+  // }
   
 
 });
 
-router.post('/', (req, res) => {
+router.post('/', validateUser, async (req, res) => {
+  validateUser()
   // RETURN THE NEWLY CREATED USER OBJECT
   // this needs a middleware to check that the request body is valid
+
 });
 
 router.put('/:id', (req, res) => {
