@@ -26,19 +26,15 @@ const validateUserId = async (req, res, next) => {
   }
 }
 
-const validateUser = async (req, res, next) => {
-  try {
-    const user = await User.insert(req.params.name)
-    if(!user) {
-      res.status(400).json({
-        message: 'missing required name field'
-      })
-    } else {
-      res.json(user)
-    }
-  }
-  catch (err) {
-    next(err)
+function validateUser(req, res, next) {
+  const { text } = req.body
+  if(!text || !text.trim()) {
+    res.status(400).json({
+      message: 'missing required name field'
+    })
+  } else {
+    req.name = text.trim()
+    next()
   }
 }
 
